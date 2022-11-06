@@ -16,32 +16,34 @@ if(isset($_POST['update'])){
     $email = $_POST['email'];
     $address = $_POST['address'];
     $username = $_POST['username'];
-    $document = $_POST['document'];
+    $document = $_FILES['document']['name'];
     $password = $_POST['password'];
     $cost = $_POST['cost'];
     $bank = $_POST['bank'];
     $acc_name = $_POST['acc_name'];
     $acc_no = $_POST['acc_no'];
-    $sql = "UPDATE assistance_h SET first_name='$fname',last_name='$lname',username='$username',password='$pwd',ic_no='$ic',phone_no='$phone',email='$email',address='$address',cost='$cost',bank_name='$bank',account_holder='$acc_name',account_no='$acc_no',document='$document' where id_assist='".$_SESSION['id_assist']."'";
+    $id = $_SESSION['id_assist'];
+    $sql = "UPDATE assistance_h SET first_name='$fname',last_name='$lname',username='$username',password='$password',ic_no='$ic',phone_no='$phone',email='$email',address='$address',cost='$cost',bank_name='$bank',account_holder='$acc_name',account_no='$acc_no',document='$document' WHERE id_assist='$id'";
 
 
 
     // if (!$result->num_rows > 0) {
-    $sql = "UPDATE parent  SET username='$_POST[username]', phonenumber= '$phonenumber',childname= '$childname',address = '$address',password = '$password' WHERE email='$_SESSION[email]'";
+    //$sql = "UPDATE parent  SET username='$_POST[username]', phonenumber= '$phonenumber',childname= '$childname',address = '$address',password = '$password' WHERE email='$_SESSION[email]'";
     $result = mysqli_query($conn, $sql);
     if ($result) {
         $row = mysqli_fetch_assoc($result);
         $_SESSION['id_assist'] = $row['id_assist'];
-
+  
         echo "<script>alert('Successfully Updated.')</script>";
-        echo "<meta http-equiv='refresh' content='1'>";
+        header("Refresh:1; url=dashboard.php");
 
     } else {
         echo "<script>alert('Woops! Something Wrong Went.')</script>";
     }
 }
 //}
-$resul = mysqli_query($conn, "SELECT * FROM parent WHERE email = '$_SESSION[email]'");
+$result = mysqli_query($conn, "SELECT * FROM assistance_h WHERE id_assist = $_SESSION[id_assist]");
+$assistRow = mysqli_fetch_array($result);
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +72,7 @@ $resul = mysqli_query($conn, "SELECT * FROM parent WHERE email = '$_SESSION[emai
     <div class="line"></div>
     <div class="user-profile">
         <h3>My Profile</h3>
-        <form class="profile-detail" method="post" action="assist_Update.php" enctype="multipart/form-data">
+        <form class="profile-detail" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label>First Name:</label>
                 <input type="text" name="fname" id="fname" value="<?php echo $assistRow['first_name'];?>">
@@ -101,7 +103,7 @@ $resul = mysqli_query($conn, "SELECT * FROM parent WHERE email = '$_SESSION[emai
                 <label>Supporting Document:</label>
                 <input type="file" name="document" id="document" class="pfile" value="<?php echo $assistRow['document'];?>">
                 <label>Cost:</label>
-                <input type="text" name="cost" id="cost">
+                <input type="number" step="0.01"  name="cost" id="cost" value="<?php echo $assistRow['cost'];?>">
             </div>
             <div class="form-group">
                 <select name="bank" id="bank">

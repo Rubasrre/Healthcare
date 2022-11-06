@@ -1,12 +1,12 @@
 <?php
-require('../connection.php');
+include('../connection.php');
 session_start();
-if (isset($_SESSION['id_assist'])) {
-    $assist = mysqli_query($conn, "SELECT * fROM assistance_h WHERE id_assist = '".$_SESSION['id_assist']."'");
-    $assistRow = mysqli_fetch_array($assist);
-}else{
-    
+if (!isset($_SESSION['id_assist'])) { // if wrong email detected it will  open main page
+    header("Location: ../index.html");
 }
+
+$result = mysqli_query($conn, "SELECT * FROM assistance_h WHERE id_assist = $_SESSION[id_assist]");
+$assistRow = mysqli_fetch_array($result);
 ?>
 
 <!DOCTYPE html>
@@ -40,12 +40,15 @@ if (isset($_SESSION['id_assist'])) {
         <p><?php echo $assistRow['status'];?></p>
     </div>
     <div class="information">
+        
         <h3>Applicant Information Detail</h3>
         <div class="line1"></div>
+  
+             
         <div class="details">
             <p class="detail">Name:</p>
             <div class="info-detail">
-                <p class="info"><?php echo $assistRow['first_name'];?> <?php echo $assistRow['last_name'];?></p>
+            <p class="info"><?php echo $assistRow['first_name'];?> <?php echo $assistRow['last_name'];?></p>
             </div>
             <p class="detail">Identification Number:</p>
             <div class="info-detail">
@@ -75,6 +78,7 @@ if (isset($_SESSION['id_assist'])) {
             <div class="info-detail">
                 <p class="info"><?php echo $assistRow['status'];?></p>
             </div>
+          
         </div>
     </div>
 </body>
