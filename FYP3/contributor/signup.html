@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a272bcb024.js" crossorigin="anonymous"></script>
+</head>
+<body class="registration">
+    <h1>New Registration</h1>
+    <p>Create your account its only takes a minute</p>
+    <form action="signup.php" class="rform" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="text" class="input " name="first_name" id="first_name" placeholder="First Name" required>
+            <input type="text" class="input" name="last_name" id="last_name" placeholder="Last Name" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input address" name="address" id="address" placeholder="Type your address..." required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input" name="uname" id="uname" placeholder="Username" required>
+            <input type="password" class="input" name="password" id="password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input" name="ic" id="ic" placeholder="Identification Number" required>
+            <input type="text" class="input" name="phone" id="phone" placeholder="Phone Number" required>
+            <input type="text" class="input" name="email" id="email" placeholder="Email Address" required>
+        </div>
+        <div class="form-group rbutton">
+            <button class=""><a href="login.html">Go Back</a></button>
+            <button type="reset">Reset</button>
+            <button type="submit" name="signup" id="signup">Register</button>
+        </div>
+    </form>
+</body>
+</html>

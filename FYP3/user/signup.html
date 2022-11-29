@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a272bcb024.js" crossorigin="anonymous"></script>
+    <title>Medical Healthcare</title>
+</head>
+<body class="registration">
+    <h1>New Registration</h1>
+    <p>Create your account its only takes a minute</p>
+    <form action="signup.php" class="rform" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="text" class="input" name="fname" id="fname" placeholder="First Name" required>
+            <input type="text" class="input" name="lname" id="lname" placeholder="Last Name" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input address" name="address" id="address" placeholder="Type your address.." required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input" name="username" id="username" placeholder="Username" required>
+            <input type="password" class="input" name="password" id="password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input" name="ic" id="ic" placeholder="Identification Number" required>
+            <input type="text" class="input" name="phone" id="phone" placeholder="Phone Number" required>
+        </div>
+        <div class="form-group">
+            <input type="email" class="input" name="email" id="email" placeholder="Email Address" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input" name="cost" id="cost" placeholder="Cost(RM)" required>
+        </div>
+        <div class="form-group">
+            <select class="input" name="bank" id="bank">
+                <option disabled value selected>Bank Name</option>
+                <option value="Maybank">Maybank</option>
+                <option value="CIMB">CIMB Bank</option>
+                <option value="Public">Public Bank</option>
+                <option value="RHB">RHB Bank</option>
+                <option value="Hong Leong">Hong Leong Bank</option>
+                <option value="AmBank">AmBank</option>
+                <option value="UOB">UOB Malaysia</option>
+                <option value="BankRakyat">Bank Rakyat</option>
+                <option value="OCBC">OCBC Bank</option>
+                <option value="HSBC">HSBC Bank Malaysia</option>
+                <option value="Bank Islam">Bank Islam</option>
+                <option value="Affin">Affin Bank</option>
+                <option value="Alliance">Alliance Bank Malaysia Berhad</option>
+                <option value="Standard Chartered">Standard Chartered Bank</option>
+                <option value="MBSB">MBSB Bank Berhad</option>
+                <option value="Citibank">Citibank Malaysia</option>
+                <option value="BSN">Bank Simpanan Nasional</option>
+                <option value="Muamalat">Bank Muamalat Malaysia Berhad</option>
+                <option value="Agro">Agrobank</option>
+                <option value="Al-Rajhi">Al-Rajhi Malaysia</option>
+            </select>
+            <input type="text" class="input" name="acc_name" id="acc_name" placeholder="Account Name" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input" name="acc_no" id="acc_no" placeholder="Account Number" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="input" name="hospital" id="hospital" placeholder="Enter admitted hospital">
+        </div>
+        <div class="form-group">
+            <textarea class="input" name="reason" id="reason" placeholder="Type your opinion" cols="30" rows="10"></textarea>
+        </div>
+        <div class="form-group rbutton">
+            <button><a href="login.html">Go Back</a></button>
+            <button type="reset">Reset</button>
+            <button type="submit" name="signup" id="signup">Register</button>
+        </div>
+    </form>
+</body>
+</html>

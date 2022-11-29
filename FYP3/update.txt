@@ -1,0 +1,220 @@
+<?php
+include '../connection.php';
+session_start();
+
+if(isset($_POST['update'])){
+    $fname = $_POST['fname'];
+    $lname = $_POST['lname'];
+    $ic = $_POST['ic'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $address = $_POST['address'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    //$document = $_FILES['document']['name'];
+    $id = $_SESSION['id_contribute'];
+
+
+    // Check file size
+    if ($_FILES["document"]["size"] > 10000000000) {
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "pdf") {
+         echo "Sorry, only JPG, JPEG, PNG & PDF files are allowed.";
+        $uploadOk = 0;
+    }   
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    // if everything is ok, try to upload file
+    } else {
+        $newdocumentname = uniqid();
+        $newdocumentname .='.'.$tr;
+        $Tempname = $_FILES["document"]["tmp_name"];
+        move_uploaded_file ($Tempname, $target_file. $newdocumentname);
+        $sql = "UPDATE contribute_h SET f_name='$fname',l_name='$lname',uname='$username',password='$password',email='$email',address='$address',ic_no='$ic',phone_no='$phone',support_doc='$newdocumentname' where id_contribute='$id'";
+
+        $result = mysqli_query($conn,$sql);
+        if($result){
+
+            echo '<script language="javascript" type="text/javascript">
+            alert("Successfully Updated.");
+            </script>';
+            header("Refresh:0; url=profile.php");
+        } else {
+            echo '<script language="javascript" type="text/javascript">
+            alert("Woops! Something Wrong Went.");
+            </script>';
+        }
+    }
+    
+}
+
+?>
+
+
+
+if(isset($_POST['contribute'])){
+                $id1 = $_POST['id'];
+                $name = $_POST['name'];
+                $cost = $_POST['cost'];
+                //$receipt = $_FILES['receipt']['name'];
+                $amount = $_POST['amount'];
+                $id_contribute = $_SESSION['id_contribute'];
+                $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	            $a = substr(str_shuffle($chars),0,2);
+	            $num = rand(100,199);
+	            $id_receipt = $a.$num;
+                $after_contribute = $cost - $amount;
+
+              $insertsql = "INSERT INTO receipt_h (id_receipt,receipt,amount,id_assist,assist_name,cost,id_contribute,after_contribute)
+                VALUES ('$id_receipt','$newdocumentname','$amount','$id1','$name','$cost','$id_contribute','$after_contribute')";
+
+                $insert = mysqli_query($conn,$insertsql);
+                if($insert){
+                    echo '<script language="javascript" type="text/javascript">
+                        alert("Thank you for your contribution.");
+                    </script>';
+                    header("Refresh:0; url=contribute.php");
+                }else{
+                    echo '<script language="javascript" type="text/javascript">
+                        alert("Sorry Please Try Again. Thank you!");
+                    </script>';
+                    header("Refresh:0; url=contribute.php");
+                }  
+            }
+
+
+
+
+<section class="assistance-list">
+        <h3>Contribution</h3>
+        <?php 
+            //get data from assistance table
+            $id = $_GET['contributeid'];
+            $sql = "SELECT * FROM assistance_h WHERE id_assist = $id";
+            $result = mysqli_query($conn,$sql);
+            $row = mysqli_fetch_array($result);
+
+            //view the assistance data
+            $id_assist = $row['id_assist'];
+            $fname = $row['first_name'];
+            $lname = $row['last_name'];
+            $cost = $row['cost'];
+
+            //post the data in the receipt table 
+            if(isset($_POST['contribute'])){
+                $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $a = substr(str_shuffle($chars),0,2);
+                $num = rand(100,199);
+                $id_receipt = $a.$num;
+                //receipt = $_FILES['receipt']['name'];
+                $id1 = $_POST['id'];
+                $name = $_POST['name'];
+                $cost = $_POST['cost'];
+                $amount = $_POST['amount'];
+                $after_contribute = $cost - $amount;
+
+                if($_FILES["receipt"]["error"]==4){
+                    //check whether it is exist or not the document
+                    echo '<script language="javascript" type="text/javascript">
+                    alert("Receipt does not exist");
+                    </script>';
+                }else{
+                    $filename = $_FILES["receipt"]["name"];
+                    $filesize = $_FILES["receipt"]["size"];
+                    $Tempname = $_FILES["receipt"]["tmp_name"];
+                    $validDocumentExtension = ['jpg','jpeg','png','pdf'];
+                    $documentExtension = explode('.',$filename);
+                    $documentExtension = strtolower(end($documentExtension));
+
+                    if(! in_array($documentExtension,$validDocumentExtension)){
+                        //check document extension format like jpg, jpeg and so on
+                        echo '<script language="javascript" type="text/javascript">
+                        alert("Invalid document");
+                        </script>';
+                        header("Refresh:0; url=contribute.php");
+                    }
+                    elseif ($filesize > 100000000000000) {
+                        //check image size 
+                        echo '<script language="javascript" type="text/javascript">
+                        alert("Receipt size too large");
+                        </script>'; 
+                        header("Refresh:0; url=contribute.php"); 
+                    }
+                    else{
+                        $newDocumentName = uniqid();
+                        $newDocumentName .='.'.$documentExtension;
+                        move_uploaded_file($Tempname, "../receipt/".$newDocumentName);
+
+                        $insertsql = "INSERT INTO receipt_h (id_receipt,receipt,amount,id_assist,assist_name,cost,id_contribute,after_contribute)
+                        VALUES ('$id_receipt','$newdocumentname','$amount','$id1','$name','$cost','$id_contribute','$after_contribute')";
+
+                        $insert = mysqli_query($conn,$insertsql);
+                        if($insert){
+                            echo '<script language="javascript" type="text/javascript">
+                            alert("Thank you for your contribution.");
+                            </script>';
+                            header("Refresh:0; url=contribute.php");
+                        }else{
+                            echo '<script language="javascript" type="text/javascript">
+                            alert("Sorry Please Try Again. Thank you!");
+                            </script>';
+                            header("Refresh:0; url=contribute.php");
+                        }
+                    }
+                }
+            }
+            
+        ?>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="hidden" name="id" id="id" value=<?php echo $id_assist;?>>
+                <p>Applicant Name:</p>
+                <input type="text" name="name" id="name" readonly value="<?php echo $fname;?> <?php echo $lname?>">
+                <p>Amount Needed:</p>
+                <input type="text" name="cost" id="cost" readonly value="<?php echo $cost;?>">
+                <p>Receipt:</p>
+                <input type="file" name="document" id="document" class="pfile">
+                <p>Contribute:</p>
+                <input type="text" name="amount" id="amount">
+                <br><br>
+                <button type="submit" name="contribute" id="contribute">Save</button>
+                <button type="button"><a href="assistance.php">Go Back</a></button>
+            </div>
+        </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Receipt</th>
+                    <th scope="col">Amount Contribute</th>
+                    <th scope="col">Cost</th>
+                    <th scope="col">After Contribute</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                //view receipt data
+                $sql2 = "SELECT * FROM receipt_h WHERE id_assist = $id";
+                $r2 = mysqli_query($conn,$sql2);
+                while($row2 = mysqli_fetch_array($r2)){
+                    echo '<tr>
+                    <th scope="row">'.$row2['id_receipt'].'</th>
+                    <td>'.$row2['receipt'].'</td>
+                    <td>'.$row2['amount'].'</td>
+                    <td>'.$row2['cost'].'</td>
+                    <td>'.$row2['after_contribute'].'</td>
+                    </tr>';
+                }
+            ?>  
+            </tbody>
+        </table>
+    </section>
